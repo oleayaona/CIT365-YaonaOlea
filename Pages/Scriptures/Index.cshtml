@@ -1,0 +1,73 @@
+@page
+@model MyScriptureJournal.Pages.Scriptures.IndexModel
+
+@{
+    ViewData["Title"] = "My Scripture Journal";
+}
+
+<h2 class="header-title">Scripture Journal Entries</h2>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+
+<form>
+    <p>
+        Note: <input type="text" asp-for="SearchString"/>
+        Book:
+        <select asp-for="ScriptureBook" asp-items="Model.Books">
+            <option value="">All</option>
+        </select>
+        <input class="btn-primary" type="submit" value="Filter" />
+    </p>
+</form>
+
+<form>
+    <p>
+        Sort By:
+        <select asp-for="Sort">
+            <option selected value="">None</option>
+            <option value="Date_Desc">Date (Newest to Oldest)</option>
+            <option value="Date_Asc">Date (Oldest to Newest)</option>
+            <option value="Book">Book</option>
+        </select>
+        <input class="btn-primary" type="submit" value="Sort" />
+    </p>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Scripture
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Scripture[0].Note)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Scripture[0].EntryDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Scripture) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Book) @Html.DisplayFor(modelItem => item.Chapter):@Html.DisplayFor(modelItem => item.Verse)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Note)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EntryDate)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
